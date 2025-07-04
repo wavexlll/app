@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Interactive Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 8px;
+            border: none;
+            background-color: royalblue;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
+
+        .link-buttons {
+            margin-top: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #eee;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            z-index: 1;
+        }
+
+        .dropdown-content p {
+            margin: 5px 0;
+            cursor: pointer;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 99;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 300px;
+            border-radius: 10px;
+        }
+
+        .modal-content p {
+            margin: 0;
+        }
+
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .clock {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .progress-section {
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #ddd;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        #progressFill {
+            height: 100%;
+            width: 0%;
+            background-color: green;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🌐 Smart Interactive Panel</h1>
+
+        <!-- Theme Toggle -->
+        <button id="toggleTheme">Toggle Dark/Light</button>
+
+        <!-- External Links -->
+        <div class="link-buttons">
+            <button onclick="openLink('https://youtube.com')">YouTube</button>
+            <button onclick="openLink('https://google.com')">Google</button>
+            <button onclick="openLink('https://github.com')">GitHub</button>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div class="dropdown">
+            <button id="dropdownBtn">Open Menu</button>
+            <div id="dropdownContent" class="dropdown-content">
+                <p>Option A</p>
+                <p>Option B</p>
+                <p>Option C</p>
+            </div>
+        </div>
+
+        <!-- Modal Section -->
+        <button id="openModal">Open Info Modal</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>This is a smart modal window!</p>
+            </div>
+        </div>
+
+        <!-- Live Clock -->
+        <div id="clock" class="clock"></div>
+
+        <!-- Progress Bar -->
+        <div class="progress-section">
+            <button onclick="startProgress()">Start Loading</button>
+            <div class="progress-bar">
+                <div id="progressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // External links
+        function openLink(url) {
+            window.open(url, '_blank');
+        }
+
+        // Theme toggle
+        const themeBtn = document.getElementById('toggleTheme');
+        themeBtn.onclick = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        // Dropdown menu
+        const dropdownBtn = document.getElementById('dropdownBtn');
+        const dropdownContent = document.getElementById('dropdownContent');
+        dropdownBtn.onclick = () => {
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        };
+
+        // Modal
+        const modal = document.getElementById('myModal');
+        const modalBtn = document.getElementById('openModal');
+        const spanClose = document.getElementsByClassName('close')[0];
+
+        modalBtn.onclick = function () {
+            modal.style.display = 'block';
+        };
+        spanClose.onclick = function () {
+            modal.style.display = 'none';
+        };
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Clock
+        function updateClock() {
+            const clock = document.getElementById('clock');
+            const now = new Date();
+            clock.innerText = now.toLocaleTimeString();
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Progress bar
+        function startProgress() {
+            const fill = document.getElementById('progressFill');
+            let width = 0;
+            fill.style.width = '0%';
+
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                } else {
+                    width += 1;
+                    fill.style.width = width + '%';
+                }
+            }, 50);
+        }
+    </script>
+</body>
+
+</html>
